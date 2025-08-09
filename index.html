@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Handmade Goods Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-emerald-950 min-h-screen flex flex-col items-center p-6">
+
+  <!-- Navigation Bar -->
+  <nav class="w-full bg-emerald-1000 text-white shadow-md fixed top-0 left-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="text-2xl font-bold">Dori Hastkala</div>
+      <ul class="flex space-x-6">
+        <li><a href="#" class="hover:text-yellow-300">Home</a></li>
+        <li><a href="#goodsContainer" class="hover:text-yellow-300">Products</a></li>
+        <li><a href="#" class="hover:text-yellow-300">About</a></li>
+        <li><a href="#" class="hover:text-yellow-300">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Push content below navbar -->
+  <div class="mt-20 w-full flex flex-col items-center">
+
+    <!-- Filters -->
+    <div class="flex flex-wrap gap-4 mb-6">
+      <input id="itemInput" type="text" placeholder="Search Item" class="border p-2 rounded" />
+      <input id="priceInput" type="number" placeholder="Max Price" class="border p-2 rounded" />
+      <select id="categorySelect" class="border p-2 rounded">
+        <option value="">All Categories</option>
+        <option value="Jewelry">Jewelry</option>
+        <option value="Pottery">Pottery</option>
+        <option value="Clothing">Clothing</option>
+      </select>
+      <button id="filterBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Filter</button>
+    </div>
+
+    <!-- Product Cards -->
+    <div id="goodsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl"></div>
+
+  </div>
+
+  <script>
+    const API_URL = "http://localhost:3000/api";
+    const goodsContainer = document.getElementById('goodsContainer');
+    const itemInput = document.getElementById('itemInput');
+    const priceInput = document.getElementById('priceInput');
+    const categorySelect = document.getElementById('categorySelect');
+    const filterBtn = document.getElementById('filterBtn');
+
+    async function fetchGoods() {
+      const params = new URLSearchParams();
+      if (itemInput.value.trim() !== '') params.append('item', itemInput.value.trim());
+      if (priceInput.value.trim() !== '') params.append('price', priceInput.value.trim());
+      if (categorySelect.value.trim() !== '') params.append('category', categorySelect.value.trim());
+
+      const res = await fetch(`${API_URL}?${params.toString()}`);
+      const data = await res.json();
+      displayGoods(data);
+    }
+
+    function displayGoods(goods) {
+      goodsContainer.innerHTML = '';
+      if (goods.length === 0) {
+        goodsContainer.innerHTML = '<p class="col-span-full text-center text-gray-300">No items found.</p>';
+        return;
+      }
+      goods.forEach(good => {
+        const card = document.createElement('div');
+        card.className = 'bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow';
+        card.innerHTML = `
+          <img src="/${good.image}" alt="${good.name}" class="w-full h-40 object-cover">
+          <div class="p-4 text-center">
+            <h2 class="text-xl font-semibold mb-2">${good.name}</h2>
+            <p class="text-gray-700 mb-1">Category: ${good.category}</p>
+            <p class="text-gray-900 font-bold mb-2">$${good.price}</p>
+          </div>
+        `;
+        goodsContainer.appendChild(card);
+      });
+    }
+
+    // Load all products initially
+    fetchGoods();
+
+    // Search on button click
+    filterBtn.addEventListener('click', fetchGoods);
+  </script>
+</body>
+</html>

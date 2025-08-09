@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Bangle",
+    "price": 50,
+    "category": "Jewelry",
+    "image": "https://localhost:3000/public/bangles.jpeg"
+  },
+  {
+    "id": 2,
+    "name": "Mud Painting",
+    "price": 150,
+    "category": "Decor",
+    "image": "http://localhost:3000/public/mudpainting.jpeg"
+  },
+  {
+    "id": 3,
+    "name": "Pouch",
+    "price": 200,
+    "category": "Accessories",
+    "image": "http://localhost:3000/public/pouch.jpeg"
+  },
+  {
+    "id": 4,
+    "name": "Runner",
+    "price": 100,
+    "category": "Decor",
+    "image": "http://localhost:3000/public/runner.jpeg"
+  },
+  {
+    "id": 5,
+    "name": "Wall Decor",
+    "price": 75,
+    "category": "Decor",
+    "image": "http://localhost:3000/public/walldecor.jpeg"
+  }
+]
